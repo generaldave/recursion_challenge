@@ -1,36 +1,30 @@
-################################################################################
-#                                                                              #
-# David Fuller                                                                 #
-#                                                                              #
-# Processing class: Java-Processing type class                                 #
-#                                                                              #
-# Created on 2017-4-27                                                         #
-#                                                                              #
-################################################################################
+'''
+David Fuller
 
-################################################################################
-#                                                                              #
-#                              IMPORT STATEMENTS                               #
-#                                                                              #
-################################################################################
+Food class - Handles the Food object.
 
-from   .Constants import *   # Constants file
-import pygame                # For GUI
+10-18-2017
+'''
 
-################################################################################
-#                                                                              #
-#                              PROCESSING CLASS                                #
-#                                                                              #
-################################################################################
+import pygame
+
+from .Constants import black, fill
 
 class Processing(object):
-    ############################################################################
-    #                                                                          #
-    #                               CONSTRUCTOR                                #
-    #                                                                          #
-    ############################################################################
+    '''
+    Sets up a Processing class
+    '''
     
     def __init__(self, screen):
+        '''
+        Processing's init method.
+
+        initializes Processing variables: stroke, fill, and color
+ 
+        Args:
+            screen (pygame.display): Screen object to draw Food on.
+        '''
+        
         self.screen = screen
         self.boolStroke = True
         self.strokecolour = black
@@ -38,36 +32,64 @@ class Processing(object):
         self.fillcolour = black
         self.strokeweight = 1
 
-    ############################################################################
-    #                                                                          #
-    #                                 METHODS                                  #
-    #                                                                          #
-    ############################################################################
-
-    # Method sets strokeweight
-    def strokeWeight(self, weight : int) -> None:
+    def strokeWeight(self, weight):
+        '''
+        Sets stroke weight to given value
+ 
+        Args:
+            weight (int): value to set stroke weight to.
+        '''
+        
         self.strokeweight = weight
 
-    # Method sets stroke to false
-    def noStroke(self) -> None:
+    def noStroke(self):
+        '''
+        Sets app to not use a stroke on shapes drawn.
+        '''
+        
         self.boolStroke = False
 
-    # Method sets stroke to true and the colour for stroke
-    def stroke(self, colour : color) -> None:
-        self.boolStroke = True
-        self.strokecolour = colour
+    def stroke(self, color):
+        '''
+        Sets app to use a stroke on shapes drawn, and the color to use for the
+        stroke.
 
-    # Method sets fill to false
-    def noFill(self) -> None:
+        Args:
+            color (color object): RGB value of stroke color
+        '''
+        
+        self.boolStroke = True
+        self.strokecolour = color
+
+    def noFill(self):
+        '''
+        Sets app to not use a fill on shapes drawn.
+        '''
+        
         self.boolFill = False
 
-    # Method sets fill to true and the colour for fill
-    def fill(self, colour : color) -> None:
-        self.boolFill = True
-        self.fillcolour = colour
+    def fill(self, color):
+        '''
+        Sets app to use a fill on shapes drawn, and the color to use for the
+        fill.
 
-    # Method draws a line to and from the given points
-    def line(self, sx : int, sy : int, ex : int, ey : int) -> None:
+        Args:
+            color (color object): RGB value of fill color
+        '''
+        
+        self.boolFill = True
+        self.fillcolour = color
+
+    def line(self, sx, sy, ex, ey):
+        '''
+        Method draws a line to and from the given points.
+
+        Args:
+            sx (int): x coordinate of line starting position
+            sy (int): y coordinate of line starting position
+            ex (int): x coordinate of line ending position
+            ey (int): y coordinate of line ending position
+        '''
         if self.boolStroke:
             start = (sx, sy)
             end = (ex, ey)
@@ -75,8 +97,17 @@ class Processing(object):
                              self.strokecolour, \
                              start, end, self.strokeweight)
 
-    # Method draws a rectangle according to the given x, y, and width
-    def rect(self, x : int, y : int, width : int, height: int) -> None:
+    def rect(self, x, y, width, height):
+        '''
+        Method draws a rectangle with the given arguments.
+
+        Args:
+            x (int): x coordinate of rectangle position
+            y (int): y coordinate of rectangle position
+            width (int): width of rectangle
+            height (int): height of rectangle
+        '''
+        
         rectangle = (x, y, width, height)
 
         # Fill and Stroke
@@ -113,8 +144,17 @@ class Processing(object):
 
         # no Stroke, no Fill does nothing
 
-	# Method draws a rectangle according to the given x, y, and width
-    def ellipse(self, x : int, y : int, width : int, height: int) -> None:
+    def ellipse(self, x, y, width, height):
+        '''
+        Method draws a ellipse with the given arguments.
+
+        Args:
+            x (int): x coordinate of ellipse center position
+            y (int): y coordinate of ellipse center position
+            width (int): width of rectangle containing ellipse
+            height (int): height of rectangle containing ellipse
+        '''
+        
         x = x - width / 2
         y = y - height / 2
         rectangle = (x, y, width, height)
