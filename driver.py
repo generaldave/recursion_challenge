@@ -1,43 +1,32 @@
-################################################################################
-#                                                                              #
-# David Fuller                                                                 #
-#                                                                              #
-# Driver File                                                                  #
-#                                                                              #
-# Created on 2017-3-18                                                         #
-#                                                                              #
-################################################################################
+'''
+David Fuller
 
-################################################################################
-#                                                                              #
-#                              IMPORT STATEMENTS                               #
-#                                                                              #
-################################################################################
+Driver file - Basic file to driv a Python application.
 
-from   app import logger   # Error logging package
-from   app import App      # Main application package
-import os                  # For file handling
+10-15-2017
+'''
 
-################################################################################
-#                                                                              #
-#                                   DRIVER                                     #
-#                                                                              #
-################################################################################
+import os
 
-# Initialize app
-def main(appDirectory) -> None:
-    App(appDirectory)
+from app import App, logger
 
-# If this file was ran directly: try to run app, or log errors
-if __name__ == "__main__": 
-    # Store app directory
-    appDirectory = os.path.dirname(os.path.realpath(__file__))
 
-    # Initialize error logging
-    log = logger.Logger(appDirectory, 'w')
+def main(app_directory):
+    '''
+    Method to drive application.
 
-    # Try to run app, otherwise log error
+    Calls App class, sending it an application directory.
+    '''
+    
+    App(app_directory)
+
+
+if __name__ == '__main__': 
+    app_directory = os.path.dirname(os.path.realpath(__file__))
+
+    # Try to run application. Otherwise log error.
+    log = logger.Logger(app_directory, 'w')
     try:   
-        main(appDirectory)
-    except:
+        main(app_directory)
+    except:       
         log.createLog('')

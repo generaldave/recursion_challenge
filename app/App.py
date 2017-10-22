@@ -1,58 +1,50 @@
-################################################################################
-#                                                                              #
-# David Fuller                                                                 #
-#                                                                              #
-# App class: App initializer                                                   #
-#                                                                              #
-# Created on 2016-12-29                                                        #
-#                                                                              #
-################################################################################
+'''
+David Fuller
 
-################################################################################
-#                                                                              #
-#                              IMPORT STATEMENTS                               #
-#                                                                              #
-################################################################################
+App class: Initializes application
 
-from   .Constants  import *            # Constants file
-from   .processing import Processing   # Processing style package
-import pygame                          # For GUI
+10-15-2017
+'''
+
+import pygame
 import random
 
-################################################################################
-#                                                                              #
-#                                   APP CLASS                                  #
-#                                                                              #
-################################################################################
+from .Constants import *
+from .processing import Processing
+
 
 class App(object):
-
-    ############################################################################
-    #                                                                          #
-    #                               CONSTRUCTOR                                #
-    #                                                                          #
-    ############################################################################
+    '''
+    Sets up and runs a Pygame application.
+    '''
     
-    def __init__(self, appDirectory: str) -> None:
-        self.appDirectory = appDirectory
+    def __init__(self, app_directory):
+        '''
+        App's init method.
+
+        Stores application directory. Sets up the graphical user interface.
+        Runs the applicaiton.
+
+        Args:
+            app_directory (str): Representation of application directory.
+        '''
+        
+        self.app_directory = app_directory
 
         self.generated = False
 
-        # Set up GUI
-        self.setupGUI()
+        self.setup_GUI()
 
-        # Run app
-        self.runApp()
+        self.run_app()
 
-    ############################################################################
-    #                                                                          #
-    #                                 METHODS                                  #
-    #                                                                          #
-    ############################################################################
+    def setup_GUI(self):
+        '''
+        Method sets up the graphical user interface.
 
-    # Mehtod sets up GUI
-    def setupGUI(self) -> None:
-        # Screen attributes
+        Initializes Pygame. Sets up the window size and title. Stores Pygame
+        clock variable for setting frames per second.
+        '''
+        
         pygame.init()
         self.screen = pygame.display.set_mode(screen_resolution)
         pygame.display.set_caption(title)
@@ -60,27 +52,44 @@ class App(object):
 
         self.processing = Processing(self.screen)
 
-    # Method generates and returns a random color
-    def random_color(self) -> color:
+    def random_color(self):
+        '''
+        Method chooses a random color.
+
+        Returns:
+            color object.
+        '''
+        
         r = random.randint(0, 255)
         g = random.randint(0, 255)
         b = random.randint(0, 255)
         return color(r = r, g = g, b = b)
 
-    # Recursive method draws a bunch of circles
-    def drawCircle(self, x, y, radius) -> None:
+    def draw_circle(self, x, y, radius):
+        '''
+        Method draws a series of circles recusrively.
+
+        Args:
+            x (int): x coordinate of circle.
+            y (int): y coordinate of circle.
+            radius (int): radius of circle.
+        '''
+        
         self.processing.ellipse(x, y, radius, radius)
         if radius > self.processing.strokeweight * 2:            
-            self.drawCircle(x + radius * 0.5, y, radius * 0.5)
-            self.drawCircle(x - radius * 0.5, y, radius * 0.5)
+            self.draw_circle(x + radius * 0.5, y, radius * 0.5)
+            self.draw_circle(x - radius * 0.5, y, radius * 0.5)
             if random.random() < 0.5:
-                self.drawCircle(x, y - radius * 0.5, radius * 0.5)            
+                self.draw_circle(x, y - radius * 0.5, radius * 0.5)            
             if random.random() < 0.5:
-                self.drawCircle(x, y + radius * 0.5, radius * 0.5)
+                self.draw_circle(x, y + radius * 0.5, radius * 0.5)
         self.generated = True
 
-    # Method runs app
-    def runApp(self) -> None:
+    def run_app(self):
+        '''
+        Runs Pygame application.
+        '''
+        
         running = True
         while running:
             for event in pygame.event.get():
@@ -99,7 +108,7 @@ class App(object):
                 self.screen.fill(black)
                 self.processing.stroke(self.random_color())
                 self.processing.noFill()            
-                self.drawCircle(300, 300, 300)
+                self.draw_circle(300, 300, 300)
 
             # Update Screen
             pygame.display.update()

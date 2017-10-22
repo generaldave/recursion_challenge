@@ -1,80 +1,93 @@
-################################################################################
-#                                                                              #
-# David Fuller                                                                 #
-#                                                                              #
-# Error logging class: Logs to appDirectory/logs/error.log                     #
-#                                                                              #
-# Created on 2016-12-27                                                        #
-#                                                                              #
-################################################################################
+'''
+David Fuller
 
-################################################################################
-#                                                                              #
-#                              IMPORT STATEMENTS                               #
-#                                                                              #
-################################################################################
+Error logging class - Logs to app_directory/logs/error.log.
 
-import logging   # Log errors
-import os        # For filesystem paths
+10-15-2017
+'''
 
-################################################################################
-#                                                                              #
-#                             ERROR LOGGING CLASS                              #
-#                                                                              #
-################################################################################
+import logging
+import os
 
 class Logger(object):
-
-    ############################################################################
-    #                                                                          #
-    #                               CONSTRUCTOR                                #
-    #                                                                          #
-    ############################################################################
+    '''
+    Logs errors to a file
+    '''
     
-    # Constructor takes appDirectory
-    def __init__(self, appDirectory, mode):
-        self.appDirectory = appDirectory
-        self.logDirectory = appDirectory      + "/logs"
-        self.logFile      = self.logDirectory + "/error.log"
-        self.mode         = mode   # Append or write over
+    def __init__(self, app_directory, mode):
+        '''
+        Logger's init method.
 
-        # Call method to set up logger
-        self.setupLogger()
+        Stores paths to log directory and log file. Stores file's open mode.
+        Calls method to setup logger object.
 
-    ############################################################################
-    #                                                                          #
-    #                                 METHODS                                  #
-    #                                                                          #
-    ############################################################################
+        Args:
+            app_directory (str): Representation of application directory.
+            mode (str): Opening mode for log file (append or write).
+        '''
+        
+        self.log_directory = app_directory + '/logs'
+        self.log_file = self.log_directory + '/error.log'
+        self.mode = mode   # Append or write over
 
-    # Method creates directory if it doesn't exist
-    def setupDirectory(self):        
-        if (not (os.path.isdir(self.logDirectory))):
-            os.makedirs(self.logDirectory, mode = 0o755)
+        self.setup_logger()
 
-    # Method creates file if it doesn't exist
-    def setupFile(self):
-        if (not (os.path.exists(self.logFile))):
-            file = open(self.logFile, 'w')
+    def setup_directory(self):
+        '''
+        Handles creating of path of log file.
+
+        If the directory does not already exists, create it. Otherwise, do
+        nothing.
+
+        mode = 0o755 gives:
+            file owner: read, write, and execute permissions
+            file group: read and execute permissions
+            file other: read and execute permissions
+        '''
+        
+        if (not (os.path.isdir(self.log_directory))):
+            os.makedirs(self.log_directory, mode = 0o755)
+
+    def setup_file(self):
+        '''
+        Handles creating of log file in the given path.
+
+        If the file does not already exists, create it. Otherwise, do
+        nothing.
+        '''
+        
+        if (not (os.path.exists(self.log_file))):
+            file = open(self.log_file, self.mode)
             file.close()
 
-    # Method sets up logging format
-    def setupFormat(self):
-        errorFormat = '%(asctime)s - %(levelname)s - %(message)s'
-        dateFormat = '%m/%d/%Y %I:%M:%S %p'
-        logging.basicConfig(filename = self.logFile,  \
-                            filemode = self.mode,     \
-                            level    = logging.DEBUG, \
-                            format   = errorFormat,   \
-                            datefmt  = dateFormat)
+    def setup_format(self):
+        '''
+        Handles setting up of log file format.        
+        '''
+        
+        error_format = '%(asctime)s - %(levelname)s - %(message)s'
+        date_format = '%m/%d/%Y %I:%M:%S %p'
+        logging.basicConfig(filename = self.log_file,
+                            filemode = self.mode,
+                            level = logging.DEBUG,
+                            format = error_format,
+                            datefmt = date_format)
 
-    # Method setups logger
-    def setupLogger(self):
-        self.setupDirectory()
-        self.setupFile()
-        self.setupFormat()
+    def setup_logger(self):
+        '''
+        Handles setting up of logger object.
 
-    # Method creates log in file
-    def createLog(self, message):        
+        Calls methods to set up directory, file, and logger formats.
+        '''
+        
+        self.setup_directory()
+        self.setup_file()
+        self.setup_format()
+
+    def createLog(self, message): 
+        '''
+        Creates a log file at the given path with the given format
+        '''
+        
         logging.exception(message)
             
